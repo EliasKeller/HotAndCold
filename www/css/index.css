@@ -1,0 +1,72 @@
+/* Favorite-Content */
+
+.favorite-content {
+    display: none
+}
+
+#key{
+    display: none;
+}
+
+.favorite-btnRemove {
+    background: #ee6e73 !important;
+}
+
+.favorite-btnRemove:hover {
+    background: #f58d91 !important;
+}
+
+
+/* Location-Content */
+
+#currentLocation-map {
+    height: 200px;
+}
+
+
+/* Diese Teil stylte die Cards, welche auf der "aktueller Standort"-View sowie auch auf der "Favorieten"-View */
+
+.location-weather-icons {
+    height: 40px;
+}
+
+.location-card-footer {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* Damit die Cards auch als Webseite gut dargestellt wird */
+
+@media only screen and (min-width: 600px) {
+    main {
+        display: flex !important;
+        justify-content: center;
+    }
+    .location-content-card {
+        width: 700px !important;
+    }
+    #currentLocation-map {
+        height: 400px;
+    }
+    .location-weather-icons {
+        height: 50px;
+    }
+    #visibility {
+        height: 250px;
+    }
+    .location-card-footer {
+        justify-content: flex-end;
+    }
+}
+
+
+/* Search-Content */
+
+.search-content {
+    display: none;
+}
+
+#search-Icon {
+    line-height: 35px;
+}

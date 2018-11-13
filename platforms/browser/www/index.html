@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+
+    <!-- eigenes StyleSheet -->
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <!-- CSS-Frameworks -->
+    <link rel="stylesheet" type="text/css" href="css/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/material-design-icons/iconfont/material-icons.css">
+
+    <!-- Favicon wird hier eingebunden -->
+    <link rel="shortcut icon" href="img/app-logo/logo.ico" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Hot and Cold</title>
+</head>
+
+<body>
+
+    <!--Nav-Bar-->
+    <nav class="nav-extended">
+        <div class="nav-content">
+            <ul class="tabs tabs-transparent row">
+                <li class="tab col s4" onclick="tabClickEvent(1)"><a>Favoriten</a></li>
+                <li class="tab col s4" onclick="tabClickEvent(2)"><a class="active">aktueller Standort</a></li>
+                <li class="tab col s4" onclick="tabClickEvent(3)"><a>Ort finden</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <main>
+
+        <!--Favorit-Content-->
+        <article class="favorite-content" id="tab1-content">
+
+            <div id="favorite-card-container"></div>
+
+            <!-- Template für die Darstellung der Favoriten -->
+            <div class="row" id="favorite-card-template">
+                <div class="col s12 m7 location-content-card">
+                    <div class="card">
+                        <div class="card-content">
+                            <!-- locationId -->
+                            <span id="key"></span>
+                            <!-- LocationName -->
+                            <span class="card-title" id="locationName"></span>
+                            <div class="row">
+                                <!-- Weathericon -->
+                                <div class="col s7 push-s5">
+                                    <img id="visibility">
+                                </div>
+                                <!-- Weatherdata -->
+                                <div class="col s5 pull-s7">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/temp.svg" alt="Tempratur"></td>
+                                                <td id="temp"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/rain.svg" alt="Tempratur"></td>
+                                                <td id="humidity"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/wind.svg" alt="Tempratur"></td>
+                                                <td id="wind"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Favoriten löschen -->
+                        <div class="card-action location-card-footer">
+                            <button class="btn waves-effect waves-light favorite-btnRemove" type="submit" name="action" onclick="deleteLocationFromDB({key}, {locationName})">Favoriten löschen
+                                <i class="material-icons right">remove</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Template endet hier -->
+
+        </article>
+
+
+        <!--AktuellerStandort-Content-->
+        <article class="location-content" id="tab2-content">
+            <div class="row">
+                <div class="col s12 m7 location-content-card">
+                    <div class="card">
+                        <div class="card-image map-container" id="currentLocation-map">
+
+                        </div>
+                        <div class="card-content">
+                            <!-- AktuellerStandort-Titel -->
+                            <span class="card-title" id="currentLocation-locationName"></span>
+
+                            <div class="row">
+                                <!-- Weathericon -->
+                                <div class="col s7 push-s5">
+                                    <img id="currentLocation-visibility">
+                                </div>
+                                <!-- Weatherdata -->
+                                <div class="col s5 pull-s7">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/temp.svg" alt="Tempratur"></td>
+                                                <td id="currentLocation-temp"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/rain.svg" alt="Tempratur"></td>
+                                                <td id="currentLocation-humidity"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><img class="location-weather-icons" src="img/weahter-icons/wind.svg" alt="Tempratur"></td>
+                                                <td id="currentLocation-wind"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Favoriten hizufügen -->
+                        <div class="card-action location-card-footer">
+                            <button class="btn waves-effect waves-light" type="submit" name="action" onclick="pushCurrentLocationToDB()">Favoriten hinzufügen
+                                <i class="material-icons right">add</i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!--OrtFinden-Content-->
+    <article class="search-content" id="tab3-content">
+        <nav>
+            <div class="nav-wrapper">
+                <form>
+                    <div class="input-field">
+                        <input id="search" type="search" placeholder="Ort suchen" required>
+                        <label class="label-icon" for="search"><i class="material-icons" id="search-Icon">search</i></label>
+                        <i class="material-icons">close</i>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </article>
+
+
+    <!-- APIs und Frameworks -->
+    <script type="text/javascript" src="js/frameworks/jquery.js"></script>
+    <script type="text/javascript" src="js/frameworks/materialize.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCI5f-xXKc6ckCDI05eDtCkt-UKpsqW-ps&callback=initMap" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.6/firebase.js"></script>
+
+    <!-- eigene Skriptdateien -->
+    <script type="text/javascript" src="js/tabChange.js"></script>
+    <script type="text/javascript" src="js/locationAndWeather.js"></script>
+    <script type="text/javascript" src="js/dantenbankAnbindung.js"></script>
+
+</body>
+
+</html>
